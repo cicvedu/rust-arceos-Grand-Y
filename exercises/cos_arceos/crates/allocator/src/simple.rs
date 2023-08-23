@@ -58,6 +58,6 @@ impl ByteAllocator for SimpleByteAllocator {
     }
 
     fn available_bytes(&self) -> usize {
-        self.size-(self.next-self.start)
+        self.size - (self.next - self.start)
     }
 }
