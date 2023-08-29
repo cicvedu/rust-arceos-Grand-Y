@@ -1,8 +1,8 @@
 use driver_common::{BaseDriverOps, DeviceType};
+#[cfg(feature = "net")]
 use driver_net::NetDriverOps;
 
-
-pub struct NetFilter<T> {
+pub struct NetFilter<T: BaseDriverOps> {
     pub inner: T,
 }
 
@@ -16,7 +16,15 @@ impl<T: BaseDriverOps> BaseDriverOps for NetFilter<T> {
     }
 }
 
-
+#[cfg(not)]
+impl<T: BaseDriverOps> NetFilter<T> {
+    pub fn device_name(&self) -> &str {
+        self.inner.device_name()
+    }
+    pub fn device_type(&self) -> DeviceType {
+        self.inner.device_type()
+    }
+}
 
 #[cfg(feature = "net")]
 impl<T: BaseDriverOps + NetDriverOps> NetDriverOps for NetFilter<T> {
